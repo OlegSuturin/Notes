@@ -1,7 +1,9 @@
 package com.example.notes;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewNotes;
     public static final ArrayList<Note> notes = new ArrayList<>();
+    private NotesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +40,40 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        NotesAdapter adapter = new NotesAdapter(notes); //создаем адаптер и передаем еме Заметки
+        adapter = new NotesAdapter(notes); //создаем адаптер и передаем еме Заметки
         recyclerViewNotes.setLayoutManager(new LinearLayoutManager(this));  // располагать элементы по вертикали последовательно, могут быть варианты
         recyclerViewNotes.setAdapter(adapter);
 
-        adapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {     //устанавливаем слушателя  ТЕМА: РЕАКЦИЯ НА НАЖАТИЯ в RecycleView
+        adapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {     //устанавливаем слушателя, передаем объект нашего созданного слушателя ТЕМА: РЕАКЦИЯ НА НАЖАТИЯ в RecycleView
             @Override
-            public void onNoteClick(int position) {     // здесь основной код реакции на нажатие
-                Toast.makeText(MainActivity.this, "Номер позиции: " + position, Toast.LENGTH_SHORT).show();
+            public void onNoteClick(int position) {     // здесь основной код реакции на простое нажатие
+                Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(int position) {         // здесь основной код реакции на простое нажатие
+                    remove(position);             //удаление элемента
             }
         });
+
+        ItemTouchHelper itemTouch = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {   //вариант удаления СВАЙПОМ в сторону
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    remove(viewHolder.getAdapterPosition());    //удаление в свайпе
+            }
+        });
+        itemTouch.attachToRecyclerView(recyclerViewNotes);   //применяем на конкретном RecycleView
+
+    }
+
+    private void remove(int position){   // удаление элемента массива в отдельном методе
+        notes.remove(position);                 //удаление указанного элемента с RecycleView
+        adapter.notifyDataSetChanged();         //применить на адапторе
 
     }
 

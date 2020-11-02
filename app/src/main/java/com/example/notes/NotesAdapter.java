@@ -17,8 +17,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 
     public interface OnNoteClickListener {     //интерфес для реализации реакции на нажатия 1)  ТЕМА: РЕАКЦИЯ НА НАЖАТИЯ в RecycleView
-        void onNoteClick(int position);
-
+        void onNoteClick(int position);     //реакция на простое нажатие
+        void onLongClick(int position);     //реакция на долгое нажатие
     }
 
     public void setOnNoteClickListener(OnNoteClickListener onNoteClickListener) {
@@ -84,6 +84,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                         int position = getAdapterPosition();          //определяем номер позиции адаптера
                         onNoteClickListener.onNoteClick(position);
                     }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {   // передается ДОЛГОЕ нажатие
+                @Override
+                public boolean onLongClick(View v) {
+                    if(onNoteClickListener!=null){
+                        int position = getAdapterPosition();
+                        onNoteClickListener.onLongClick(position);
+                    }
+
+                    return true;   //!!!!! ОБЯЗАТЕЛЬНО true, иначе сработаю оба метода
                 }
             });
 
