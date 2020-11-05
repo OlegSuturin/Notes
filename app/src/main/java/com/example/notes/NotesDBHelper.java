@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 public class NotesDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "notes.db";    //имя БД
-    private static final int DB_VERSION = 1;   //версия БД
+    private static final int DB_VERSION = 2;   //версия БД
 
 
     public NotesDBHelper(@Nullable Context context) {    // удалили праметры, оставили context

@@ -18,7 +18,7 @@ public class NotesContract {
                 "(" + _ID + " " + TYPE_INTEGER + " PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_TITLE + " " + TYPE_TEXT + ", " +
                 COLUMN_DESCRIPTION + " " + TYPE_TEXT + ", " +
-                COLUMN_DAY_OF_WEAK + " " + TYPE_TEXT + ", " +
+                COLUMN_DAY_OF_WEAK + " " + TYPE_INTEGER + ", " +
                 COLUMN_PRIORITY + " " + TYPE_INTEGER+ ")";
 
         public static final String DROP_COMMAND = "DROP TABLE IF EXISTS " +TABLE_NAME;  //комманда на удаление таблицы
